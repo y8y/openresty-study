@@ -22,3 +22,21 @@ if not ok then
 end
 
 ngx.say("connected to mysql.")
+
+res, err, errno, sqlstate = db:query("create table cats "
+                        .. "(id serial primary key, "
+                        .. "name varchar(5))")
+if not res then
+    ngx.say("bad result: ", err, ": ", errno, " ", sqlstate)
+    return
+end
+
+ngx.say("table cats created.")
+
+res, err, errno, sqlstate = db:query("insert into cats (name) "
+                        .. "values (\'Bob\'), (\'\'), (null)")
+
+if not res then
+    ngx.say("bad result: ", err, ": ", errno, " ", sqlstate)
+    return
+end
